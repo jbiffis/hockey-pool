@@ -1,3 +1,5 @@
+// This hook checks to see if a player exists before adding them.  it looks for a matching nhl_id to match them up.
+// Function throws an error if they've already been added.
 
 module.exports = function () {
     return context => {

@@ -7,7 +7,7 @@ const Promise = require('bluebird');
 const socket = io('http://localhost:3030');
 const app = feathers();
 
-// Set up Socket.io client with the socket
+// Set up Socket.io client with the socket.  this connects to our hockey pool app.
 app.configure(socketio(socket));
 
 var baseOptions = {
@@ -23,17 +23,19 @@ var teams = [
   {id: 4, teamName: 'Philadelphia Flyers', shortName: 'PHI'}
 ]
 
+//kick things off
 getPlayers();
 
 function getPlayers () {
  
   // for each team, get roster
   return Promise.each(teams, team => {
-    options = Object.assign({}, baseOptions);
-    options.uri = options.uri + '/teams/' + team.id + '/roster';
+    options = Object.assign({}, baseOptions);   //copy the base options object so we can modify
+    options.uri = options.uri + '/teams/' + team.id + '/roster';  //set the team.
 
+    // call the nhl api
     return makeCall(options)
-      .then(players => {
+      .then(players => {    // we get back a list of players on this team
         return Promise.each(players, player => {
           // Add the player
           return app.service('api/players').create({
