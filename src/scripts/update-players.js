@@ -15,6 +15,7 @@ var baseOptions = {
   json: true // Automatically parses the JSON string in the response
 };
 
+//TODO: Jordan please fill in the rest of this information using https://statsapi.web.nhl.com/api/v1/teams/4
 var teams = [
   {id: 1, teamName: 'New Jersey Devils', shortName: 'NJD'},
   {id: 2, teamName: 'New York Islanders', shortName: 'NYI'},
