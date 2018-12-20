@@ -3,7 +3,7 @@ services:
   hockeypool:
     container_name: hockeypool
     restart: always
-    build: jbiffis/hockeypool:latest
+    image: jbiffis/hockeypool:latest
     ports:
       - 3030
       - 80
