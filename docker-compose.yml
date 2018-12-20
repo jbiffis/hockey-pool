@@ -1,0 +1,18 @@
+version: "2"
+services:
+  hockey-pool:
+    container_name: hockey-pool
+    restart: always
+    build: .
+    ports:
+      - "3030:3030"
+      - "80:80"
+    links:
+      - hockey-pool-mongodb
+  hockey-pool-mongodb:
+    container_name: hockey-pool-mongodb
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
