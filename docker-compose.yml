@@ -4,7 +4,6 @@ services:
     container_name: hockeypool
     restart: always
     build: jbiffis/hockeypool:latest
-    use:
     ports:
       - 3030
       - 80
