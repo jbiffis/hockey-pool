@@ -9,9 +9,7 @@ services:
       - 80
     links:
       - hockeypool-mongodb
-    command:
-      - npm
-      - start
+    command: npm start
   hockeypool-mongodb:
     container_name: hockeypool-mongodb
     image: mongo
