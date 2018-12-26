@@ -18,4 +18,3 @@ COPY . .
 EXPOSE 3030
 EXPOSE 80
 
-CMD [ "npm", "start" ]

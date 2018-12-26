@@ -3,15 +3,17 @@ services:
   hockeypool:
     container_name: hockeypool
     restart: always
-    image: jbiffis/hockeypool:latest
+    build: .
     ports:
       - 3030
       - 80
+      - 9229
     links:
       - hockeypool-mongodb
     command:
-      - npm
-      - start
+      - node
+      - "--inspect-brk=0.0.0.0"
+      - "."
   hockeypool-mongodb:
     container_name: hockeypool-mongodb
     image: mongo
