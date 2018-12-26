@@ -10,14 +10,9 @@ services:
       - 9229
     links:
       - hockeypool-mongodb
-    command:
-      - node
-      - "--inspect-brk=0.0.0.0"
-      - "."
+    command: "npm start"
   hockeypool-mongodb:
     container_name: hockeypool-mongodb
     image: mongo
-    volumes:
-      - ./data:/data/db
     ports:
       - 27017

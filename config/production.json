@@ -1,4 +1,5 @@
 {
   "host": "hockey-pool-app.feathersjs.com",
-  "port": "PORT"
+  "port": "PORT",
+  "mongodb": "mongodb://hockeypool-mongodb:27017/hockey_pool"
 }
