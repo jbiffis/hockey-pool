@@ -11,7 +11,8 @@ module.exports = function (app) {
     avatar: { type: String, required: false },
     owners: { type: Object, required: false },    // This shouuld be a link to a user. {String userId, String name, String handle}
     commish: { type: String, required: false },
-    scoringSettings: { type: String, required: true }
+    scoringSettings: { type: Object, required: false },
+    leagueSettings: { type: Object, required: false }
   }, {
     timestamps: true
   });
