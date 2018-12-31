@@ -11,8 +11,7 @@ module.exports = function (app) {
     teamName: {type: String, required: true },
     currentPlayers: {type: Object, required: false},  // when a player gets added, put them here.
     pastPlayers: {type: Object, required: false},   // When a player gets dropped, move him from current to past.  Yes there can be dupes.
-    pointSummary: {type: Object, required: false},  // Every day add a new line with each current players points from today's games
-    teamPoints: {type: Object, required: false}   // Every day add a new item with current totals.
+    teamPoints: {type: Object, required: false   // Every day add a new item with current totals.
   }, {
     timestamps: true
   });

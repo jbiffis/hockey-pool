@@ -6,5 +6,64 @@
     "default": 10,
     "max": 50
   },
-  "mongodb": "mongodb://hockeypool-mongodb:27017/hockey_pool"
+  "mongodb": "mongodb://localhost:27017/hockey_pool",
+  "authentication": {
+    "secret": "e1ca5b77810adaafb312c09df2674b3461a15f99069dc728d7f6be9bf105f038f10b45f54614af9acf1325662589d95f0edaab347d07c5e8ee290d8640483c6ee1766348474dd5bb7e08fb46e98fe060192219c7964e81d6d201926c324bc618c9a58e8e8421c5ed92b78e98ee60131b8b829a339563bf2827b8a4458d22b5fa01746301b30590def47f1f5128d4fa523981422721efa746bb03a916727f83f5a54334a0ec1f2ad81fd4e9fc9b143e34bba6aa48e01213bd8a444a94792236b8b0d16e80ba879a3c2920daa31a0020c614abbfde70874fb1241a45407b50bbeb3f59f6a4cb2ea2ebe7066823931a2ccefc0b225061a469d413cbb98ec08b0c37",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "email",
+      "passwordField": "password"
+    },
+    "google": {
+      "clientID": "your google client id",
+      "clientSecret": "your google client secret",
+      "successRedirect": "/",
+      "scope": [
+        "profile openid email"
+      ]
+    },
+    "facebook": {
+      "clientID": "your facebook client id",
+      "clientSecret": "your facebook client secret",
+      "successRedirect": "/",
+      "scope": [
+        "public_profile",
+        "email"
+      ],
+      "profileFields": [
+        "id",
+        "displayName",
+        "first_name",
+        "last_name",
+        "email",
+        "gender",
+        "profileUrl",
+        "birthday",
+        "picture",
+        "permissions"
+      ]
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "feathers-jwt",
+      "httpOnly": false,
+      "secure": false
+    }
+  }
 }

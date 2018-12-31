@@ -11,7 +11,7 @@ module.exports = function (app) {
   app.use('/api/fantasy/teams', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('api/fantasy/teams');
+  const service = app.service('api/fantasy-teams');
 
   mongoClient.then(db => {
     service.Model = db.collection('api-fantasy-teams');
@@ -19,3 +19,4 @@ module.exports = function (app) {
 
   service.hooks(hooks);
 };
+
