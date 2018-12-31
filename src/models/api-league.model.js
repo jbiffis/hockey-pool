@@ -9,8 +9,8 @@ module.exports = function (app) {
     name: { type: String, required: true },
     description: { type: String, required: false },
     avatar: { type: String, required: false },
-    owners: { type: Object, required: false },    // This shouuld be 
-    commish: { type: String, required: true },
+    owners: { type: Object, required: false },    // This shouuld be a link to a user. {String userId, String name, String handle}
+    commish: { type: String, required: false },
     scoringSettings: { type: String, required: true }
   }, {
     timestamps: true

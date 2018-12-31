@@ -9,7 +9,7 @@ module.exports = function (app) {
     type: { type: String, required: true },     // Add, drop
     league: {type: String, required: true},     // The league
     team: { type: String, required: true },     // The fantasy team doing the transaction
-    player: {type: String, required: true },
+    player: {type: Object, required: true },    // Should be {String playerId, String fullName}
     ip_address: {type: String, required: true}  // We should save some data for audit purposes.
   }, {
     timestamps: true
