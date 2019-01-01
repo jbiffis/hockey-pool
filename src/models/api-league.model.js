@@ -12,10 +12,13 @@ module.exports = function (app) {
     owners: { type: Object, required: false },    // This shouuld be a link to a user. {String userId, String name, String handle}
     commish: { type: String, required: false },
     scoringSettings: { type: Object, required: false },
-    leagueSettings: { type: Object, required: false }
+    maxTeams: { type: Number, required: false }
   }, {
     timestamps: true
   });
 
   return mongooseClient.model('apiLeague', apiLeague);
 };
+
+// The scoringSettings object
+// maxTeams
