@@ -20,10 +20,9 @@ module.exports = function () {
                     throw new Error("Cannot find league");
                 } else {
                     let league = resp.data[0];
+                    
                     // Validate current vs max teams
-                    let currentTeams = league.teams.length;
-
-                    if (currentTeams + 1 >= league.maxTeams) {
+                    if (league.currentTeams + 1 >= league.maxTeams) {
                         throw new Error("League at max number of teams");
                     }
 
@@ -37,16 +36,16 @@ module.exports = function () {
             });
         }
 
-        Promise.all([
-            leagueAcceptingTeam(context.data.league)
-        ])
-        .then(resp => {
-            // resp values are in order of the called functions
-            if (resp[0] == false) {
-                throw new Error("Cannot add team to league");
-            }
+        return Promise.all([
+                leagueAcceptingTeam(context.data.league)
+            ])
+            .then(resp => {
+                // resp values are in order of the called functions
+                if (resp[0] == false) {
+                    throw new Error("Cannot add team to league");
+                }
 
-            return context;
-        })
+                return context;
+            })
     };
   };

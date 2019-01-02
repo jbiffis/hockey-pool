@@ -1,11 +1,15 @@
-
+const logger = require('../../hooks/logger.js');
+const leagues_check_add = require('../../hooks/leagues-check-add.js');
+//const league_validation = require('../../hooks/leagues-validation.js')
 
 module.exports = {
   before: {
-    all: [],
+    all: [logger()],
     find: [],
     get: [],
-    create: [],
+    create: [function() {
+      return leagues_check_add()
+    }],
     update: [],
     patch: [],
     remove: []
