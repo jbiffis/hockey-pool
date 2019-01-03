@@ -7,7 +7,7 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const apiTeams = new Schema({
     owner: { type: Object, required: true },
-    league: {type: String, required: true },
+    leagueId: {type: String, required: true },
     name: {type: String, required: true },
     currentPlayers: {type: Object, required: false},  // when a player gets added, put them here.
     pastPlayers: {type: Object, required: false},   // When a player gets dropped, move him from current to past.  Yes there can be dupes.

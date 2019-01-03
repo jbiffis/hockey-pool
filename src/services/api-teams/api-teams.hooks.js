@@ -1,14 +1,13 @@
-const teams_check_add = require('../../hooks/teams-check-add.js');
-const teams_validation = require('../../hooks/teams-validation.js');
+const teamsCheckAdd = require('../../hooks/teams-check-add');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [teams_check_add(), teams_validation()],
-    update: [teams_validation()],
-    patch: [teams_validation()],
+    create: [teamsCheckAdd()],
+    update: [],
+    patch: [],
     remove: []
   },
 
@@ -16,10 +15,10 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [/* Increment league.currentTeams  */],
     update: [],
     patch: [],
-    remove: []
+    remove: [/* Decrement league.currentTeams */]
   },
 
   error: {

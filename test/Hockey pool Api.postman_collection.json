@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "3622d803-95aa-401c-b993-9feaf72dcc25",
+		"name": "Hockey pool Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/leagues",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "996c2397-3e57-4896-a353-8422752476cd",
+						"exec": [
+							"pm.test(\"response is Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is set correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"Test League 1\");\r",
+							"    pm.environment.set(\"leagueId\", jsonData._id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Test League 1",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Test league again",
+							"type": "text"
+						},
+						{
+							"key": "maxTeams",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues"
+					]
+				},
+				"description": "Add new league"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/leagues/:id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c1a1a6a-4e80-47ab-8a8f-af19535309a6",
+						"exec": [
+							"pm.test(\"response must be valid and have a body\", function () {\r",
+							"     // assert that the status code is 200\r",
+							"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+							"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Data is retrieved correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).length.to.eql(1);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Test League 1\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/leagues/{{leagueId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues",
+						"{{leagueId}}"
+					]
+				},
+				"description": "Get Specific League info"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/leagues",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues"
+					]
+				},
+				"description": "Get list of leagues"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/leagues/:id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5e5281a3-e4f8-43a9-9445-cf201e503daf",
+						"exec": [
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is set correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"Test Edited League\");\r",
+							"    pm.expect(jsonData.maxTeams).to.eql(8);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Test Edited League",
+							"type": "text"
+						},
+						{
+							"key": "league",
+							"value": "5c2a8b163b58fb2d54644ca9",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "owner",
+							"value": "{'ownerName': 'Jeremy Biffis'}",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "maxTeams",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues/{{leagueId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues",
+						"{{leagueId}}"
+					]
+				},
+				"description": "Patch (modify) a team"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/leagues/:id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9826c606-1e1b-4d3d-9eb7-1498d89b0b8c",
+						"exec": [
+							"pm.test(\"response is Created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues/{{leagueId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues",
+						"{{leagueId}}"
+					]
+				},
+				"description": "Delete a league"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/teams",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Test League",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/teams",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"teams"
+					]
+				},
+				"description": "Get all teams (across all leagues)"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/teams",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Jordans Team",
+							"type": "text"
+						},
+						{
+							"key": "league",
+							"value": "5c2a8b163b58fb2d54644ca9",
+							"type": "text"
+						},
+						{
+							"key": "owner",
+							"value": "{'ownerName': 'Jordan Biffis'}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/teams",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"teams"
+					]
+				},
+				"description": "Add a new team"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/players",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues/5c2a8b163b58fb2d54644ca9",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues",
+						"5c2a8b163b58fb2d54644ca9"
+					]
+				},
+				"description": "Get all players"
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/api/leagues/5c2a8b163b58fb2d54644ca9",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues/5c2a8b163b58fb2d54644ca9",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues",
+						"5c2a8b163b58fb2d54644ca9"
+					]
+				},
+				"description": "Post new Player"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f330b149-4670-4efb-9a89-965f476b5a9d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "da80512d-addc-441d-a72b-3ca9f332dd48",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

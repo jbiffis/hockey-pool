@@ -7,9 +7,7 @@ module.exports = {
     all: [logger()],
     find: [],
     get: [],
-    create: [function() {
-      return leagues_check_add()
-    }],
+    create: [],
     update: [],
     patch: [],
     remove: []
