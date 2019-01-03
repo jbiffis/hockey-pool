@@ -1,6 +1,7 @@
 const teamsCheckAdd = require('../../hooks/teams-check-add');
 const teamsValidation = require('../../hooks/teams-validation');
 const {
+  markTeamDeleted,
   setNumberOfTeams
 } = require('../../hooks/teams-hooks');
 
@@ -12,7 +13,7 @@ module.exports = {
     create: [teamsCheckAdd(), teamsValidation()],
     update: [],
     patch: [],
-    remove: []
+    remove: [markTeamDeleted(), setNumberOfTeams()]
   },
 
   after: {
@@ -22,7 +23,7 @@ module.exports = {
     create: [setNumberOfTeams()],
     update: [],
     patch: [],
-    remove: [setNumberOfTeams()]
+    remove: []
   },
 
   error: {

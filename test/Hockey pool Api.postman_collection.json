@@ -370,6 +370,49 @@
 				"description": "Get teams for a specific league"
 			},
 			"response": []
+		},
+		{
+			"name": "/api/teams/{{teamId}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "73c900bf-548c-405f-b6cf-9930e9b52178",
+						"exec": [
+							"pm.test(\"response is Created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/teams/{{teamId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"teams",
+						"{{teamId}}"
+					]
+				},
+				"description": "Delete a specific team"
+			},
+			"response": []
 		}
 	],
 	"event": [

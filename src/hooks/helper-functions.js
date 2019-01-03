@@ -1,8 +1,8 @@
-// Validate all rules for adding a team to a league
+// Validate all rules for adding a team to a Team
 // Rules are: 
-// - Adding this team must stay under league max teams
+// - Adding this team must stay under Team max teams
 // - Adding must be before a certain date/event/flag in db
-// - Limit to one team per owner per league
+// - Limit to one team per owner per Team
 
 // Helper Functions
 
@@ -22,16 +22,29 @@ let getLeague = function(context, leagueId) {
     })
 }
 
-let getTeamsByLeague = function(context, leagueId) {
+let getTeam = function(context, teamId) {
     const teams_service   = context.app.service('api/teams');
 
     return teams_service.find({query: {
-        leagueId: leagueId
+        _id: teamId
         }
     })
     .then(resp => {
+        if (resp.data.length <= 0) {
+            throw new Error("Cannot find team");
+        }
+
+        return resp.data[0];
+    })
+}
+
+let getTeams = function(context, params) {
+    const teams_service   = context.app.service('api/teams');
+
+    return teams_service.find(params)
+    .then(resp => {
         if (resp.data.length < 0) {
-            throw new Error("Error getting teams for league");
+            throw new Error("Error getting teams for League");
         }
 
         return resp.data;
@@ -49,9 +62,10 @@ let valName = function(str) {
 
 
 module.exports = {
-        getLeague,
-        getTeamsByLeague,
-        team: {
-            valName
-        }
+    getLeague,
+    getTeam,
+    getTeams,
+    team: {
+        valName
+    }
 }

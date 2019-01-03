@@ -9,6 +9,7 @@ module.exports = function (app) {
     owner: { type: Object, required: true },
     leagueId: {type: String, required: true },
     name: {type: String, required: true },
+    isActive: { type: Boolean, required: true, default: true }, // This gets set to false before deletion
     currentPlayers: {type: Object, required: false},  // when a player gets added, put them here.
     pastPlayers: {type: Object, required: false},   // When a player gets dropped, move him from current to past.  Yes there can be dupes.
     teamPoints: {type: Object, required: false }   // Every day add a new item with current totals.

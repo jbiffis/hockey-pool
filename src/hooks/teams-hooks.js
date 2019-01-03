@@ -3,18 +3,35 @@
 const helpers = require('./helper-functions.js');
 
 // eslint-disable-next-line no-unused-vars
+markTeamDeleted = function (options = {}) {
+    return async context => {
+        return context.app.service('api/teams')
+            .patch(context.id, { 'isActive' : false})
+            .then(resp => {
+                return context;
+            });
+    }
+};
+
+// eslint-disable-next-line no-unused-vars
 setNumberOfTeams = function (options = {}) {
   return async context => {
-        let leagueId = context.data.leagueId;
+        let leagueId;
+        // This function is called both by adding and removing a team.  When we are removing a team we don't 
+        // know what the league id is.  We need to find it first.
+        if (context.data && context.data.leagueId) {
+            leagueId = context.data.leagueId
+        } else {
+            let teamId = context.id;
+            await helpers.getTeam(context, teamId).then(team => leagueId = team.leagueId);
+        }
         
-        return Promise.all([
-            helpers.getLeague(context, leagueId),
-            helpers.getTeamsByLeague(context, leagueId)
-        ]).then(results => {
-            let league = results[0];
-            let numberOfTeams = results[1].length;
+        return helpers.getTeams(context, {query: { leagueId: leagueId, isActive: true } })
+          .then(teams => {
+            let numberOfTeams = teams.length;
 
             return context.app.service('api/leagues').patch(leagueId, { 'currentTeams' : numberOfTeams});
+
         }).then(resp => {
             return context;
         }).catch(err => {
@@ -26,5 +43,6 @@ setNumberOfTeams = function (options = {}) {
 
 
 module.exports = {
+    markTeamDeleted,
     setNumberOfTeams
 }
