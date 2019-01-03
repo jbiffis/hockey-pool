@@ -42,6 +42,7 @@
     "bluebird": "^3.5.3",
     "compression": "^1.7.1",
     "cors": "^2.8.4",
+    "feathers-hooks-common": "^4.19.6",
     "feathers-mongodb": "^3.0.0",
     "feathers-mongoose": "^6.1.0",
     "helmet": "^3.10.0",

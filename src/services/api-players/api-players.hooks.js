@@ -1,11 +1,12 @@
 const player_check_if_exists = require('../../hooks/players-check-if-exists.js');
+const { disallow } = require('feathers-hooks-common');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [player_check_if_exists()],
+    create: [player_check_if_exists(), disallow('rest')],
     update: [],
     patch: [],
     remove: []

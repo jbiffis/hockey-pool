@@ -19,8 +19,8 @@
 							"\r",
 							"pm.test(\"Data is set correctly\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.name).to.eql(\"Test League 1\");\r",
 							"    pm.environment.set(\"leagueId\", jsonData._id);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Test League 1\");\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -42,7 +42,7 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "Test League 1",
+							"value": "Jeremy Test",
 							"type": "text"
 						},
 						{
@@ -88,7 +88,6 @@
 							"\r",
 							"pm.test(\"Data is retrieved correctly\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).length.to.eql(1);\r",
 							"    pm.expect(jsonData.name).to.eql(\"Test League 1\");\r",
 							"});"
 						],
@@ -277,45 +276,26 @@
 		},
 		{
 			"name": "/api/teams",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"type": "text"
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0d557207-cf38-442e-90c1-850865bd61cb",
+						"exec": [
+							"pm.test(\"response is Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is set correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"teamId\", jsonData._id);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Jordans Team\");\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "Test League",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{url}}/api/teams",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"teams"
-					]
-				},
-				"description": "Get all teams (across all leagues)"
-			},
-			"response": []
-		},
-		{
-			"name": "/api/teams",
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -335,8 +315,8 @@
 							"type": "text"
 						},
 						{
-							"key": "league",
-							"value": "5c2a8b163b58fb2d54644ca9",
+							"key": "leagueId",
+							"value": "{{leagueId}}",
 							"type": "text"
 						},
 						{
@@ -361,7 +341,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/players",
+			"name": "/api/teams/{{teamId}}",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -375,65 +355,19 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "test",
-							"type": "text"
-						}
-					]
-				},
+				"body": {},
 				"url": {
-					"raw": "{{url}}/api/leagues/5c2a8b163b58fb2d54644ca9",
+					"raw": "{{url}}/api/teams/{{teamId}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"leagues",
-						"5c2a8b163b58fb2d54644ca9"
+						"teams",
+						"{{teamId}}"
 					]
 				},
-				"description": "Get all players"
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/api/leagues/5c2a8b163b58fb2d54644ca9",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "test",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{url}}/api/leagues/5c2a8b163b58fb2d54644ca9",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"leagues",
-						"5c2a8b163b58fb2d54644ca9"
-					]
-				},
-				"description": "Post new Player"
+				"description": "Get teams for a specific league"
 			},
 			"response": []
 		}
