@@ -47,6 +47,7 @@
     "feathers-mongoose": "^6.1.0",
     "helmet": "^3.10.0",
     "mongodb": "^3.0.10",
+    "mongodb-core": "^3.0.9",
     "mongoose": "^5.0.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth20": "^1.0.0",
