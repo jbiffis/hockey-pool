@@ -51,6 +51,35 @@ let getTeams = function(context, params) {
     })
 }
 
+let getPlayer = function(context, playerId) {
+    const players_service   = context.app.service('api/players');
+
+    return players_service.find({query: {
+        _id: playerId
+        }
+    })
+    .then(resp => {
+        if (resp.data.length < 0) {
+            throw new Error("Error getting player");
+        }
+
+        return resp.data[0];
+    })
+}
+
+let getPlayers = function(context, params) {
+    const players_service   = context.app.service('api/players');
+
+    return players_service.find(params)
+    .then(resp => {
+        if (resp.data.length < 0) {
+            throw new Error("Error getting players");
+        }
+        return resp.data;
+    })
+}
+
+
 
 // Team validation functions
 
@@ -65,6 +94,8 @@ module.exports = {
     getLeague,
     getTeam,
     getTeams,
+    getPlayer,
+    getPlayers,
     team: {
         valName
     }

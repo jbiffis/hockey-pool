@@ -7,9 +7,9 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const apiLeagueTransactions = new Schema({
     type: { type: String, required: true },     // Add, drop
-    league: {type: String, required: true},     // The league
-    team: { type: String, required: true },     // The fantasy team doing the transaction
-    player: {type: Object, required: true },    // Should be {String playerId, String fullName}
+    leagueId: {type: String, required: true},     // The league
+    teamId: { type: String, required: true },     // The fantasy team doing the transaction
+    playerId: {type: Object, required: true },    // Should be {String playerId, String fullName}
     ip_address: {type: String, required: true}  // We should save some data for audit purposes.
   }, {
     timestamps: true
