@@ -46,6 +46,7 @@
     "feathers-mongodb": "^3.0.0",
     "feathers-mongoose": "^6.1.0",
     "helmet": "^3.10.0",
+    "lodash": "^4.17.11",
     "mongodb": "^3.0.10",
     "mongodb-core": "^3.0.9",
     "mongoose": "^5.0.2",

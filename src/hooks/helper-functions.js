@@ -79,6 +79,30 @@ let getPlayers = function(context, params) {
     })
 }
 
+let getTeamTransactions = function(context, teamId) {
+    const current_season = '2018-2019';     // TODO: set up another service for this kind of stuff
+
+    return getTransactions(context, {
+        query: {
+            teamId: teamId,
+            season: current_season,
+            sort: {createdAt: -1}
+        }
+    });
+}
+
+let getTransactions = function(context, params) {
+    const transactions_service = context.app.service('/api/leagues/transactions');
+
+    return transactions_service.find(params)
+    .then(resp => {
+        if (resp.data.length < 0) {
+            throw new Error("Error getting players");
+        }
+        return resp.data;
+    })
+}
+
 
 
 // Team validation functions
@@ -96,6 +120,8 @@ module.exports = {
     getTeams,
     getPlayer,
     getPlayers,
+    getTransactions,
+    getTeamTransactions,
     team: {
         valName
     }

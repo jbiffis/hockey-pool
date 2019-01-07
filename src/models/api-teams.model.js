@@ -9,9 +9,10 @@ module.exports = function (app) {
     owner:          { type: Object, required: false },    // See Below!  TODO: Make this required when we're closer to going live
     leagueId:       { type: String, required: true },
     name:           { type: String, required: true },
+    season:         { type: String, required: true, default: '2018-2019' },
     isActive:       { type: Boolean, required: true, default: true }, // This gets set to false before deletion
-    currentPlayers: { type: Object, required: false},
-    pastPlayers:    { type: Object, required: false},   // When a player gets dropped, move him from current to past.  Yes there can be dupes.
+    currentPlayers: { type: Array, required: true, default: [] },
+    pastPlayers:    { type: Array, required: false},   // When a player gets dropped, move him from current to past.  Yes there can be dupes.
     teamPoints:     { type: Object, required: false }   // Every day add a new item with current totals.
   }, {
     timestamps: true

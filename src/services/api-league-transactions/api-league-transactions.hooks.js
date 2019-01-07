@@ -1,12 +1,15 @@
-const transactions_check_add  = require('../../hooks/transactions-check-add.js');
-const transactions_check_drop = require('../../hooks/transactions-check-drop.js');
+const { 
+  validateRequest,
+  addPlayer, 
+  dropPlayer
+}  = require('../../hooks/transactions-hooks.js');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [transactions_check_add(), transactions_check_drop()],
+    create: [validateRequest(), addPlayer(), dropPlayer()],
     update: [],
     patch: [],
     remove: []
@@ -21,7 +24,7 @@ module.exports = {
     patch: [],
     remove: []
   },
-
+//TODO ON CREATE ERROR WE HAVE TO REVERT THE TRANSACTION!!!!
   error: {
     all: [],
     find: [],
