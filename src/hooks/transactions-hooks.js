@@ -10,6 +10,7 @@
 const util = require('util');
 const _ = require('lodash');
 const helpers = require('./helper-functions.js');
+const verifyMaxPlayerPositions = require('./team/verify-max-player-positions.js');
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
 
 let validateRequest = function (options = {}) {
@@ -50,10 +51,7 @@ let addPlayer = function (options = {}) {
             // Check for max players on the team
             if (team.currentPlayers.length + 1 > league.teamSettings.maxPlayers) {
                 throw new Error(util.format("Team will have too many players.  Max is %d players per team", league.teamSettings.maxPlayers));
-            }
-
-
-            checkMaximumPerPosition(player, league, team);            
+            } 
 
             // Check number of adds this week is ok.
             const weekTransactions = _.sumBy(
@@ -76,6 +74,9 @@ let addPlayer = function (options = {}) {
 
             team.currentPlayers.push(playerToAdd);
 
+            // Verify the number of players in each position is ok
+            verifyMaxPlayerPositions(league, team);
+
             return context.app.service('api/teams').patch(context.data.teamId, {currentPlayers: team.currentPlayers})
         })
         .then(resp => {
@@ -91,45 +92,6 @@ let dropPlayer = function(options = {}) {
         }    
     }
 };
-
-let checkMaximumPerPosition = function(player, league, team) {
-    // Check for max per position
-    // iterate through the array league.teamSettings.maxPerPosition and check what is in team.currentPlayers
-    // Find the position of the player and attempt to add.
-    if (team.currentPlayers.length == 0) {
-        return;
-    }
-
-    var playerPos = player.primaryPosition;
-
-    // If player to be added is a Forward, but the league doesn't differenciate between LW,RW,C
-    if (['RW', 'LW', 'C'].includes(playerPos) && league.teamSettings.maxPerPosition['F'] > 0) {
-        let currentNumberOfPlayers = _.sumBy(
-            team.currentPlayers,
-            ({ currentPlayer }) => Number(currentPlayer.primaryPosition ==  'C' 
-                                            || currentPlayer.primaryPosition ==  'LW' 
-                                            || currentPlayer.primaryPosition ==  'RW')
-        );
-
-        let max = league.teamSettings.maxPerPosition[player.primaryPosition];
-        if (currentNumberOfPlayers == max) {
-            throw new Error(util.format("Team already has %d/%d players in position %s", currentNumberOfPlayers, max, player.primaryPosition))
-        }
-    // Otherwise everything is as you would imagine -- Just check current players in that positon against the max.
-    } else {
-        let currentNumberOfPlayers = _.sumBy(
-            team.currentPlayers,
-            ({ currentPlayer }) => Number(currentPlayer.primaryPosition == value )
-        );
-
-        let max = league.teamSettings.maxPerPosition[playerPos];
-        if (currentNumberOfPlayers == max) {
-            throw new Error(util.format("Team already has %d/%d players in position %s", currentNumberOfPlayers, max, playerPos))
-        }
-    }
-
-    return;
-}
 
 
 module.exports = {
