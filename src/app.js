@@ -44,6 +44,8 @@ app.configure(mongoose);
 
 app.configure(mongodb);
 
+app.configure(knex);
+
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(authentication);

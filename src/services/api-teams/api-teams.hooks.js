@@ -10,7 +10,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [teamsValidation()],
+    create: [teamsCheckAdd(), teamsValidation()],
     update: [],
     patch: [],
     remove: [markTeamDeleted(), setNumberOfTeams()]

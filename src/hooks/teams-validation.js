@@ -1,14 +1,13 @@
 const helpers = require('./helper-functions.js');
-const verifyMaxPlayerPositions = require('./team/verify-max-player-positions.js');
+const verifyMaxPlayers = require('./team/verify-max-players');
+const verifyMaxPlayerPositions = require('./team/verify-max-player-positions');
+
 
 module.exports = function (options = {}) {
     return async context => {
         return helpers.getLeague(context, context.data.leagueId)
             .then(league => {
-                if (context.data.currentPlayers.length > league.teamSettings.maxPlayers) {
-                    throw new Error(util.format("Team will have too many players.  Max is %d players per team", league.teamSettings.maxPlayers));
-                }
-
+                verifyMaxPlayers(league, context.data);
                 verifyMaxPlayerPositions(league, context.data);
 
                 return context;

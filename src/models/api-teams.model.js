@@ -11,7 +11,7 @@ module.exports = function (app) {
     name:           { type: String, required: true },
     season:         { type: String, required: true, default: '2018-2019' },
     isActive:       { type: Boolean, required: true, default: true }, // This gets set to false before deletion
-    currentPlayers: { type: Array, required: true, default: [] },
+    currentPlayers: { type: Array, required: true, default: [] },  
     pastPlayers:    { type: Array, required: false},   // When a player gets dropped, move him from current to past.  Yes there can be dupes.
     teamPoints:     { type: Object, required: false }   // Every day add a new item with current totals.
   }, {
@@ -27,11 +27,12 @@ const userModel = {
 }
 
 // Any player should look like this
+// Note that you can submit a player with just the Id.  This helps when initially setting up a team
 const playerModel = {
-  playerId: { type: String, required: true},
-  fullName:       { type: String, required: true },
-  nhl_id:         { type: Number, required: true },
-  primaryPosition:{ type: String, required: true }
+  playerId:       { type: String, required: true},
+  fullName:       { type: String, required: false },
+  nhl_id:         { type: Number, required: false },
+  primaryPosition:{ type: String, required: false }
 }
 /**********************************************
  * playerModes:
