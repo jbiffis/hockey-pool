@@ -16,11 +16,9 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
 
-const mongoose = require('./mongoose');
-
-const mongodb = require('./mongodb');
-
 const authentication = require('./authentication');
+
+const knex = require('./knex');
 
 const app = express(feathers());
 
@@ -39,10 +37,6 @@ app.use('/', express.static(app.get('public')));
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio());
-
-app.configure(mongoose);
-
-app.configure(mongodb);
 
 app.configure(knex);
 

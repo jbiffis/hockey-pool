@@ -43,7 +43,7 @@
     "compression": "^1.7.1",
     "cors": "^2.8.4",
     "feathers-hooks-common": "^4.19.6",
-    "feathers-knex": "^5.0.1",
+    "feathers-knex": "4.0.0",
     "feathers-mongodb": "^3.0.0",
     "feathers-mongoose": "^6.1.0",
     "helmet": "^3.10.0",

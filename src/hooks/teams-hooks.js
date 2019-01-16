@@ -6,7 +6,7 @@ const helpers = require('./helper-functions.js');
 markTeamDeleted = function (options = {}) {
     return async context => {
         return context.app.service('api/teams')
-            .patch(context.id, { 'isActive' : false})
+            .patch(context.id, { 'is_active' : false})
             .then(resp => {
                 return context;
             });
@@ -19,19 +19,17 @@ setNumberOfTeams = function (options = {}) {
         let leagueId;
         // This function is called both by adding and removing a team.  When we are removing a team we don't 
         // know what the league id is.  We need to find it first.
-        if (context.data && context.data.leagueId) {
-            leagueId = context.data.leagueId
+        if (context.data && context.data.league_id) {
+            leagueId = context.data.league_id
         } else {
             let teamId = context.id;
-            await helpers.getTeam(context, teamId).then(team => leagueId = team.leagueId);
+            await helpers.getTeam(context, teamId).then(team => leagueId = team.league_id);
         }
         
-        return helpers.getTeams(context, {query: { leagueId: leagueId, isActive: true } })
-          .then(teams => {
-            let numberOfTeams = teams.length;
-
-            return context.app.service('api/leagues').patch(leagueId, { 'currentTeams' : numberOfTeams});
-
+        return helpers.getLeague(context, leagueId)
+          .then(league => {
+            league.current_teams++;
+            return context.app.service('api/leagues').update(leagueId, league);
         }).then(resp => {
             return context;
         }).catch(err => {

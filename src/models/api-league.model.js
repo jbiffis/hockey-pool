@@ -1,48 +1,46 @@
-// api/league-model.js - A mongoose model
+/* eslint-disable no-console */
+
+// test-psql-model.js - A KnexJS
 // 
-// See http://mongoosejs.com/docs/models.html
+// See http://knexjs.org/
 // for more of what you can do here.
-
-const defScoringSettings = {
-
-}
-
-const defTeamSettings = {
-  maxPlayers: 10,
-  maxPerPosition: {'F': 0, 'D': 0, 'RW': 0, 'LW': 0, 'C': 0, 'G': 0}
-}
-
-const defTransSettings = {
+const defTransSettings = JSON.stringify({
   addsPerWeek: 10,
   addsPerSeason: 10,
   waiverTime: -1
-}
+});
 
-// Owner/Commish should look like this:
-const userModel = {
-  userId: { type: String, required: true}
-}
+const defMaxPerPosition = JSON.stringify({'F': 0, 'D': 0, 'RW': 0, 'LW': 0, 'C': 0, 'G': 0});
+
 
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema } = mongooseClient;
-  const apiLeague = new Schema({
-    name:           { type: String, required: true },
-    description:    { type: String, required: false },
-    avatar:         { type: String, required: false },
-    owners:         { type: Object, required: false },    // This shouuld be a link to a user. {String userId, String name, String handle}
-    commish:        { type: Object, required: true },
-    season:         { type: String, required: true, default: '2018-2019' },
-    scoringSettings:{ type: Object, required: false, default: defScoringSettings },
-    transSettings:  { type: Object, required: true, default: defTransSettings },
-    teamSettings:   { type: Object, required: true, default: defTeamSettings },
-    allowNewTeams:  { type: Boolean, required: true, default: true },
-    currentTeams:   { type: Number, required: true, default: 0 },
-    maxTeams:       { type: Number, required: false }
-  }, {
-    timestamps: true
+  const db = app.get('knexClient');
+  const tableName = 'leagues';
+  db.schema.hasTable(tableName).then(exists => {
+    if(!exists) {
+      db.schema.createTable(tableName, table => {
+        table.increments('id');
+        table.uuid('gid');
+        table.integer('commish').unsigned();    // FK
+      //table.foreign('owner').references('Users.id')
+        table.string('name').notNullable();
+        table.string('season').notNullable();
+        table.string('description');
+        table.string('avatar');
+        table.boolean('allow_new_teams').notNullable().defaultTo(true);
+        table.integer('max_teams').notNullable();
+        table.json('scoring_categories');
+        table.integer('current_teams').notNullable().defaultTo(0);
+        table.json('max_players_position').notNullable().defaultTo(defMaxPerPosition);
+        //table.integer('max_players').notNullable();  I'm pretty sure this is useless
+        table.json('trans_settings').notNullable().defaultTo(defTransSettings);
+        table.timestamps(true,true);
+      })
+        .then(() => console.log(`Created ${tableName} table`))
+        .catch(e => console.error(`Error creating ${tableName} table`, e));
+    }
   });
+  
 
-  return mongooseClient.model('apiLeague', apiLeague);
+  return db;
 };
-

@@ -1,5 +1,5 @@
 // Initializes the `/api/teams` service on path `/api/teams`
-const createService = require('feathers-mongoose');
+const createService = require('feathers-knex');
 const createModel = require('../../models/api-teams.model');
 const hooks = require('./api-teams.hooks');
 
@@ -8,7 +8,7 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'apiTeams',
+    name: 'teams',
     Model,
     paginate
   };

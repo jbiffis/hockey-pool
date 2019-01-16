@@ -1,19 +1,29 @@
-// api/league-transactions-model.js - A mongoose model
+/* eslint-disable no-console */
+
+// test-psql-model.js - A KnexJS
 // 
-// See http://mongoosejs.com/docs/models.html
+// See http://knexjs.org/
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema } = mongooseClient;
-  const apiLeagueTransactions = new Schema({
-    type:       { type: String, required: true },     // Add, drop
-    season:     { type: String, required: true, default: '2018-2019' },
-    leagueId:   { type: String, required: true },     // The league
-    teamId:     { type: String, required: true },     // The fantasy team doing the transaction
-    playerId:   { type: Object, required: true }     // Should be {String playerId, String fullName}
-  }, {
-    timestamps: true
-  });
+  const db = app.get('knexClient');
+  const tableName = 'league_transactions';
+  db.schema.hasTable(tableName).then(exists => {
+    if(!exists) {
+      db.schema.createTable(tableName, table => {
+        table.increments('id');
+        table.uuid('gid');
+        table.string('type').notNullable();
+        table.string('season').notNullable().defaultTo('2018-2019');
+        table.integer('league_id').notNullable();
+        table.integer('team_id').notNullable();
+        table.integer('player_id').notNullable();
+        table.timestamps(true,true);
+      })
+      .then(() => console.log(`Created ${tableName} table`))
+      .catch(e => console.error(`Error creating ${tableName} table`, e));
+  }
+});
 
-  return mongooseClient.model('apiLeagueTransactions', apiLeagueTransactions);
+
+return db;
 };

@@ -1,15 +1,28 @@
-// api/player-daily-stats-model.js - A mongoose model
+/* eslint-disable no-console */
+
+// test-psql-model.js - A KnexJS
 // 
-// See http://mongoosejs.com/docs/models.html
+// See http://knexjs.org/
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema } = mongooseClient;
-  const apiPlayerDailyStats = new Schema({
-    text: { type: String, required: true }
-  }, {
-    timestamps: true
+  const db = app.get('knexClient');
+  const tableName = 'player_daily_stats';
+  db.schema.hasTable(tableName).then(exists => {
+    if(!exists) {
+      db.schema.createTable(tableName, table => {
+        table.increments('id');
+        table.string('season');
+        table.integer('player_id');
+        table.integer('league_id');
+        table.integer('team_id');
+        table.json('stats');
+        table.timestamps(true,true);
+      })
+        .then(() => console.log(`Created ${tableName} table`))
+        .catch(e => console.error(`Error creating ${tableName} table`, e));
+    }
   });
+  
 
-  return mongooseClient.model('apiPlayerDailyStats', apiPlayerDailyStats);
+  return db;
 };

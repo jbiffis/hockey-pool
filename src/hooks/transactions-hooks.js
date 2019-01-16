@@ -16,9 +16,9 @@ const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000
 let validateRequest = function (options = {}) {
     return context => {
         if (context.data.type != 'add' && context.data.type != 'drop') { throw new Error("Invalid Transaction Type") }
-        if (!context.data.playerId) { throw new Error("Missing playerId") }
-        if (!context.data.leagueId) { throw new Error("Missing leagueId") }
-        if (!context.data.teamId) { throw new Error("Missing teamId") }
+        if (!context.data.player_id) { throw new Error("Missing player_id") }
+        if (!context.data.player_id) { throw new Error("Missing player_id") }
+        if (!context.data.team_id) { throw new Error("Missing team_id") }
 
         return context;
     }
@@ -36,10 +36,10 @@ let addPlayer = function (options = {}) {
 
         return Promise.all([
             // We need the league, the team, the player, and the players on the team already, team transactions
-            helpers.getPlayer(context, context.data.playerId),
-            helpers.getLeague(context, context.data.leagueId),
-            helpers.getTeam(context, context.data.teamId),
-            helpers.getTeamTransactions(context, context.data.teamId)
+            helpers.getPlayer(context, context.data.player_id),
+            helpers.getLeague(context, context.data.league_id),
+            helpers.getTeamPlayers(context, context.data.team_id),
+            helpers.getTeamTransactions(context, context.data.team_id)
         ])
         .then(responses => {
             // resp values are in order of the called functions.
@@ -65,11 +65,14 @@ let addPlayer = function (options = {}) {
 
             // TODO: Check if player already exists on this team.
 
+
+            // TODO This all changes to just setting them in the player league thing;
+            
             const playerToAdd = {
-                playerId: player._id,
-                fullName: player.fullName,
+                player_id: player.id,
+                full_name: player.fullName,
                 nhl_id: player.nhl_id,
-                primaryPosition: player.primaryPosition
+                primary_position: player.primaryPosition
             }
 
             team.currentPlayers.push(playerToAdd);

@@ -65,11 +65,11 @@ function getPlayers () {
         return Promise.each(players, player => {
           // Add the player
           return app.service('api/players').create({
-            fullName: player.person.fullName,
+            full_name: player.person.fullName,
             nhl_id: player.person.id,
             number: player.jerseyNumber,
-            primaryPosition: player.position.abbreviation,
-            currentTeam: options.team
+            primary_position: player.position.abbreviation,
+            current_team: options.team.shortname
           })
           .catch(err => {
             console.log(err);

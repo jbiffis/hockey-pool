@@ -10,9 +10,10 @@ let getLeague = function(context, leagueId) {
     const leagues_service   = context.app.service('api/leagues');
 
     return leagues_service.find({query: {
-        _id: leagueId
+            id: leagueId
         }
     })
+    // TODo get the teams
     .then(resp => {
         if (resp.data.length <= 0) {
             throw new Error("Cannot find league");
@@ -22,11 +23,26 @@ let getLeague = function(context, leagueId) {
     })
 }
 
+// Returns a league with the current Teams object filled out
+let getLeagueTeams = function(context, leagueId) {
+
+    let ret;
+    return getLeague(context, leagueId)
+        .then(league => {
+            ret = league;
+            return getTeams(context, {query: {league_id: league.id}})
+        })
+        .then(teams => {
+            ret.currentTeams = teams;
+            return ret;
+        })
+}
+
 let getTeam = function(context, teamId) {
     const teams_service   = context.app.service('api/teams');
 
     return teams_service.find({query: {
-        _id: teamId
+            id: teamId
         }
     })
     .then(resp => {
@@ -55,7 +71,7 @@ let getPlayer = function(context, playerId) {
     const players_service   = context.app.service('api/players');
 
     return players_service.find({query: {
-        _id: playerId
+            id: playerId
         }
     })
     .then(resp => {
@@ -116,6 +132,7 @@ let valName = function(str) {
 
 module.exports = {
     getLeague,
+    getLeagueTeams,
     getTeam,
     getTeams,
     getPlayer,

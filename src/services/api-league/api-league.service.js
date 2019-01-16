@@ -1,5 +1,5 @@
 // Initializes the `api/league` service on path `/api/league`
-const createService = require('feathers-mongoose');
+const createService = require('feathers-knex');
 const createModel = require('../../models/api-league.model');
 const hooks = require('./api-league.hooks');
 
@@ -8,9 +8,10 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'api-league',
+    name: 'leagues',
     Model,
-    paginate
+    paginate,
+    id: 'id'
   };
 
   // Initialize our service with any options it requires

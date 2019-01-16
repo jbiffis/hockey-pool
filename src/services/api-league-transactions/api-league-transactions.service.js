@@ -1,5 +1,5 @@
 // Initializes the `api/league-transactions` service on path `/api/league/transactions`
-const createService = require('feathers-mongoose');
+const createService = require('feathers-knex');
 const createModel = require('../../models/api-league-transactions.model');
 const hooks = require('./api-league-transactions.hooks');
 
@@ -8,7 +8,7 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'api-league-transactions',
+    name: 'league_transactions',
     Model,
     paginate
   };

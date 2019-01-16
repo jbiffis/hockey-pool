@@ -6,6 +6,130 @@
 	},
 	"item": [
 		{
+			"name": "{{url}}/api/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "22133c5e-e25f-4108-addf-26dfd8ab5f10",
+						"exec": [
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is set correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"userId\", jsonData.id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "jeremy+test@biffis.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "Create a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/authenticate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "22133c5e-e25f-4108-addf-26dfd8ab5f10",
+						"exec": [
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Data is set correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"userAccessToken\", jsonData.accessToken);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "jeremy+test@biffis.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "text"
+						},
+						{
+							"key": "strategy",
+							"value": "local",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"authentication"
+					]
+				},
+				"description": "Log a user in"
+			},
+			"response": []
+		},
+		{
 			"name": "/api/leagues",
 			"event": [
 				{
@@ -19,7 +143,7 @@
 							"\r",
 							"pm.test(\"Data is set correctly\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.environment.set(\"leagueId\", jsonData._id);\r",
+							"    pm.environment.set(\"leagueId\", jsonData.id);\r",
 							"    pm.expect(jsonData.name).to.eql(\"Test League 1\");\r",
 							"});"
 						],
@@ -33,29 +157,13 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/json",
+						"type": "text"
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "Jeremy Test",
-							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "Test league again",
-							"type": "text"
-						},
-						{
-							"key": "maxTeams",
-							"value": "10",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "{\r\n    \"trans_settings\": {\r\n        \"addsPerWeek\": 10,\r\n        \"addsPerSeason\": 10,\r\n        \"waiverTime\": -1\r\n    },\r\n    \"season\": \"2018-2019\",\r\n    \"allow_new_teams\": true,\r\n    \"name\": \"Test League 1\",\r\n    \"description\": \"Test league again\",\r\n    \"max_teams\": 10,\r\n    \"commish\": 12344\r\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/leagues",
@@ -207,7 +315,7 @@
 							"disabled": true
 						},
 						{
-							"key": "maxTeams",
+							"key": "max_teams",
 							"value": "8",
 							"type": "text"
 						}
@@ -229,48 +337,51 @@
 			"response": []
 		},
 		{
-			"name": "/api/leagues/:id",
+			"name": "{{url}}/api/players",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "9826c606-1e1b-4d3d-9eb7-1498d89b0b8c",
+						"id": "22133c5e-e25f-4108-addf-26dfd8ab5f10",
 						"exec": [
-							"pm.test(\"response is Created\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"pm.test(\"response is ok\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
 							"});\r",
-							""
+							"\r",
+							"pm.test(\"Data is set correctly\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"userId\", jsonData._id);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "DELETE",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"url": {
-					"raw": "{{url}}/api/leagues/{{leagueId}}",
+					"raw": "{{url}}/api/players",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"leagues",
-						"{{leagueId}}"
+						"players"
 					]
 				},
-				"description": "Delete a league"
+				"description": "Get a list of players"
 			},
 			"response": []
 		},
@@ -288,7 +399,7 @@
 							"\r",
 							"pm.test(\"Data is set correctly\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.environment.set(\"teamId\", jsonData._id);\r",
+							"    pm.environment.set(\"teamId\", jsonData.id);\r",
 							"    pm.expect(jsonData.name).to.eql(\"Jordans Team\");\r",
 							"});"
 						],
@@ -302,29 +413,13 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/json",
+						"type": "text"
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "Jordans Team",
-							"type": "text"
-						},
-						{
-							"key": "leagueId",
-							"value": "{{leagueId}}",
-							"type": "text"
-						},
-						{
-							"key": "owner",
-							"value": "{'ownerName': 'Jordan Biffis'}",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Jordans Team\",\n    \"league_id\": {{leagueId}},\n    \"owner\": 12311\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/teams",
@@ -372,16 +467,13 @@
 			"response": []
 		},
 		{
-			"name": "/api/teams/{{teamId}}",
+			"name": "{{url}}/api/transactions",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "73c900bf-548c-405f-b6cf-9930e9b52178",
+						"id": "0d557207-cf38-442e-90c1-850865bd61cb",
 						"exec": [
-							"pm.test(\"response is Created\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -389,28 +481,31 @@
 				}
 			],
 			"request": {
-				"method": "DELETE",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
+						"value": "application/json",
 						"type": "text"
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"league_id\":\"{{leagueId}}\",\n\t\"team_id\":\"{{teamId}}\",\n\t\"player_id\":\"{{playerId}}\",\n\t\"type\": \"add\"\n}"
+				},
 				"url": {
-					"raw": "{{url}}/api/teams/{{teamId}}",
+					"raw": "{{url}}/api/leagues/transactions",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"teams",
-						"{{teamId}}"
+						"leagues",
+						"transactions"
 					]
 				},
-				"description": "Delete a specific team"
+				"description": "Add a new league transaction (add or drop)"
 			},
 			"response": []
 		},
@@ -468,7 +563,96 @@
 			"response": []
 		},
 		{
-			"name": "{{url}}/api/users",
+			"name": "/api/teams/{{teamId}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "73c900bf-548c-405f-b6cf-9930e9b52178",
+						"exec": [
+							"pm.test(\"response is Created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/teams/{{teamId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"teams",
+						"{{teamId}}"
+					]
+				},
+				"description": "Delete a specific team"
+			},
+			"response": []
+		},
+		{
+			"name": "/api/leagues/:id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9826c606-1e1b-4d3d-9eb7-1498d89b0b8c",
+						"exec": [
+							"pm.test(\"response is Created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/leagues/{{leagueId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"leagues",
+						"{{leagueId}}"
+					]
+				},
+				"description": "Delete a league"
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/api/users/{{userId}}",
 			"event": [
 				{
 					"listen": "test",
@@ -484,7 +668,17 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{userAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -493,96 +687,19 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "email",
-							"value": "jeremy@biffis.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "1234",
-							"type": "text"
-						}
-					]
-				},
+				"body": {},
 				"url": {
-					"raw": "{{url}}/api/users",
+					"raw": "{{url}}/api/users/{{userId}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"users"
+						"users",
+						"{{userId}}"
 					]
 				},
 				"description": "Create a new user"
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/authenticate",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "22133c5e-e25f-4108-addf-26dfd8ab5f10",
-						"exec": [
-							"pm.test(\"response is ok\", function () {\r",
-							"    pm.response.to.have.status(201);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Data is set correctly\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.environment.set(\"userAccessToken\", jsonData.accessToken);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "email",
-							"value": "jeremy@biffis.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "1234",
-							"type": "text"
-						},
-						{
-							"key": "strategy",
-							"value": "local",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{url}}/authentication",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"authentication"
-					]
-				},
-				"description": "Log a user in"
 			},
 			"response": []
 		}

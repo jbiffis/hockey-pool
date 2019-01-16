@@ -1,13 +1,11 @@
 const helpers = require('./helper-functions.js');
-const verifyMaxPlayers = require('./team/verify-max-players');
 const verifyMaxPlayerPositions = require('./team/verify-max-player-positions');
 
 
 module.exports = function (options = {}) {
     return async context => {
-        return helpers.getLeague(context, context.data.leagueId)
+        return helpers.getLeague(context, context.data.league_id)
             .then(league => {
-                verifyMaxPlayers(league, context.data);
                 verifyMaxPlayerPositions(league, context.data);
 
                 return context;

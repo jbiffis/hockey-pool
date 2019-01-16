@@ -1,5 +1,5 @@
 // Initializes the `api/player-daily-stats` service on path `/api/player-daily-stats`
-const createService = require('feathers-mongoose');
+const createService = require('feathers-knex');
 const createModel = require('../../models/api-player-daily-stats.model');
 const hooks = require('./api-player-daily-stats.hooks');
 
@@ -8,7 +8,7 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'api-player-daily-stats',
+    name: 'player-daily-stats',
     Model,
     paginate
   };

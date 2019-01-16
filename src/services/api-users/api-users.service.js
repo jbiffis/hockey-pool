@@ -1,5 +1,5 @@
 // Initializes the `api-users` service on path `/api-users`
-const createService = require('feathers-mongoose');
+const createService = require('feathers-knex');
 const createModel = require('../../models/api-users.model');
 const hooks = require('./api-users.hooks');
 
@@ -8,6 +8,7 @@ module.exports = function (app) {
   const paginate = app.get('paginate');
 
   const options = {
+    name: 'users',
     Model,
     paginate
   };

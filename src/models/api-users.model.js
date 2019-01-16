@@ -1,20 +1,27 @@
-// api-users-model.js - A mongoose model
-//
-// See http://mongoosejs.com/docs/models.html
+/* eslint-disable no-console */
+
+// test-psql-model.js - A KnexJS
+// 
+// See http://knexjs.org/
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const apiUsers = new mongooseClient.Schema({
-  
-    email: {type: String, unique: true, lowercase: true},
-    password: { type: String },
-  
-    googleId: { type: String },
-    facebookId: { type: String },
-  
-  }, {
-    timestamps: true
+  const db = app.get('knexClient');
+  const tableName = 'users';
+  db.schema.hasTable(tableName).then(exists => {
+    if(!exists) {
+      db.schema.createTable(tableName, table => {
+        table.increments('id');
+        table.string('email').unique();
+        table.string('password');
+        table.string('googleid');
+        table.string('facebookid');
+        table.timestamps(true,true);
+      })
+        .then(() => console.log(`Created ${tableName} table`))
+        .catch(e => console.error(`Error creating ${tableName} table`, e));
+    }
   });
+  
 
-  return mongooseClient.model('apiUsers', apiUsers);
+  return db;
 };
